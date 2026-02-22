@@ -1,0 +1,4 @@
+localStorage.removeItem("requests");
+
+
+console.log(localStorage.getItem("requests"));

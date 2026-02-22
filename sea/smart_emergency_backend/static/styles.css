@@ -1,0 +1,430 @@
+/* -------------------- GLOBAL -------------------- */ 
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background: #f6faff;
+  color: #333;
+  line-height: 1.6;
+}
+h1, h2, h3 { margin: 0 0 12px 0; font-weight: 700; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; }
+
+/* -------------------- HEADER -------------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 36px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.left-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  font-weight: 800;
+  color: #0f62fe;
+  font-size: 22px;
+}
+
+/* --------- PROFESSIONAL PROFILE ICON --------- */
+.profile-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #0f62fe;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.profile-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #0f62fe;
+}
+.profile-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+nav a {
+  margin-left: 20px;
+  font-weight: 600;
+  color: #333;
+}
+nav a:hover { color: #0f62fe; }
+
+/* -------------------- HERO SECTION -------------------- */
+.hero {
+  background: linear-gradient(120deg, #0f62fe, #62a0ff);
+  color: white;
+  text-align: center;
+  padding: 40px 20px 30px 20px;
+  border-bottom-left-radius: 20% 8%;
+  border-bottom-right-radius: 20% 8%;
+  position: relative;
+}
+
+/* -------------------- MAIN LAYOUT -------------------- */
+main {
+  padding: 40px 24px;
+}
+
+/* -------------------- HOME / PROFILE FORM CARD -------------------- */
+.home-layout, .profile-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.professional-card {
+  width: 540px;
+  padding: 50px 40px 40px 40px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.professional-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(0,0,0,0.22);
+}
+.professional-card h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #0f62fe;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+.form-info {
+  font-size: 15px;
+  margin-bottom: 28px;
+  color: #555;
+  text-align: center;
+}
+.field { margin-bottom: 20px; display: flex; flex-direction: column; }
+.field label { font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+input, textarea, select {
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 16px;
+}
+textarea { resize: none; min-height: 100px; }
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  margin-top: 10px;
+}
+.btn-primary { background: #0f62fe; color: #fff; }
+.btn-primary:hover { background: #0353e9; }
+.btn-ghost { background: transparent; border: 1px solid #ccc; color: #333; margin-top: 8px; }
+.success-msg { color: green; margin-top: 12px; font-weight: 500; }
+
+/* -------------------- MAP -------------------- */
+.map-real {
+  width: 100%;
+  height: 500px;
+  border-radius: 16px;
+  margin-top: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* -------------------- POPUP STYLE FOR MARKERS -------------------- */
+.leaflet-popup-content {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f62fe;
+}
+.leaflet-popup-tip {
+  background: #0f62fe;
+}
+
+/* -------------------- CARDS -------------------- */
+.card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* -------------------- REQUEST ITEM -------------------- */
+.request-item {
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border-left: 4px solid #0f62fe;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.request-item:hover {
+  background: #f0f5ff;
+  transform: translateX(2px);
+}
+
+/* -------------------- CONTACT PAGE SPECIFIC -------------------- */
+.contact-main h1 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+.ngo-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
+}
+.ngo-list li:last-child { border-bottom: none; }
+
+/* -------------------- FOOTER -------------------- */
+footer {
+  text-align: center;
+  padding: 16px;
+  margin-top: 30px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* -------------------- RESPONSIVE / MOBILE USABILITY -------------------- */
+@media (max-width: 1024px) {
+  header {
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  nav a { margin-left: 12px; font-size: 15px; }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 16px 25px 16px;
+    border-bottom-left-radius: 15% 8%;
+    border-bottom-right-radius: 15% 8%;
+  }
+  .professional-card {
+    width: 90%;
+    padding: 30px 20px;
+  }
+  .home-layout, .profile-layout {
+    flex-direction: column;
+    padding: 20px 12px;
+  }
+  .map-real {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 12px 16px;
+  }
+  .logo {
+    font-size: 20px;
+  }
+  nav a {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  .hero {
+    padding: 30px 12px 20px 12px;
+  }
+  .professional-card {
+    width: 100%;
+    padding: 25px 16px;
+  }
+  .map-real { height: 250px; }
+  input, textarea, select {
+    font-size: 14px;
+    padding: 12px;
+  }
+  .btn, .btn-primary {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .auth-card-login, .auth-card-signup {
+    width: 90%;
+    padding: 30px 20px;
+  }
+}
+
+/* -------------------- LOGIN PAGE -------------------- */
+body.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f6faff;
+}
+.auth-card-login {
+  background: #ffffff;
+  padding: 40px 36px;
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeUp 0.6s ease;
+  box-sizing: border-box;
+}
+.auth-card-login h1 {
+  font-size: 32px;
+  color: #0f62fe;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+.auth-card-login h2 {
+  font-size: 20px;
+  margin-bottom: 24px;
+  font-weight: 600;
+  color: #333;
+}
+.auth-card-login .field {
+  margin-bottom: 16px;
+  width: 100%;
+}
+.auth-card-login .field input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+.auth-card-login .field input:focus {
+  border: 1px solid #0f62fe;
+  outline: none;
+  box-shadow: 0 0 8px rgba(15, 98, 254, 0.2);
+}
+.auth-card-login .btn-primary {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: #0f62fe;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.auth-card-login .btn-primary:hover {
+  background: #034dcc;
+  transform: translateY(-2px);
+}
+.auth-card-login .small {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #555;
+}
+.auth-card-login a {
+  color: #0f62fe;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-card-login a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------- SIGNUP PAGE -------------------- */
+body.signup-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f6faff;
+}
+.auth-card-signup {
+  background: #ffffff;
+  padding: 42px 38px;
+  border-radius: 22px;
+  box-shadow: 0 14px 38px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  animation: fadeUp 0.6s ease;
+  box-sizing: border-box;
+}
+.auth-card-signup h1 {
+  font-size: 34px;
+  color: #0f62fe;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+.auth-card-signup h2 {
+  font-size: 20px;
+  margin-bottom: 22px;
+  font-weight: 600;
+  color: #333;
+}
+.auth-card-signup .field {
+  margin-bottom: 14px;
+  width: 100%;
+}
+.auth-card-signup .field input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+.auth-card-signup .field input:focus {
+  border: 1px solid #0f62fe;
+  outline: none;
+  box-shadow: 0 0 8px rgba(15, 98, 254, 0.2);
+}
+.auth-card-signup .btn-primary {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: #0f62fe;
+  color: #fff;
+  margin-top: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.auth-card-signup .btn-primary:hover {
+  background: #034dcc;
+  transform: translateY(-2px);
+}
+.auth-card-signup .small {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+.auth-card-signup a {
+  color: #0f62fe;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-card-signup a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------- ANIMATION -------------------- */
+@keyframes fadeUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

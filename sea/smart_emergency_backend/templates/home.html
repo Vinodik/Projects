@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home - SEA</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+  #map-picker { height: 300px; margin-top: 10px; border-radius: 8px; }
+  .home-layout .professional-card { max-width: 600px; margin: auto; }
+  .field { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="left-nav">
+    <a href="{{ url_for('profile_page') }}" class="profile-icon" title="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#0f62fe" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </a>
+    <div class="logo">SEA</div>
+  </div>
+  <nav>
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('dashboard_page') }}">Dashboard</a>
+    <a href="{{ url_for('contact_page') }}">NGOs</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Welcome to SEA</h1>
+  <p>Your Emergency Assistance Platform</p>
+</section>
+
+<main class="home-layout">
+  <div class="professional-card">
+    <h2>Request Help</h2>
+    <form id="request-form">
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" id="r-phone" required>
+      </div>
+      <div class="field">
+        <label>Resource Needed</label>
+        <select id="r-type" required>
+          <option value="">Select Resource</option>
+          <option value="Ambulance">Ambulance</option>
+          <option value="Medicine">Medicine</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Food">Food</option>
+          <option value="Volunteer Help">Volunteer Help</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <textarea id="r-address" placeholder="Enter location or pick on map" required></textarea>
+        <div id="map-picker"></div>
+      </div>
+      <div class="field">
+        <button type="button" id="use-location-btn" class="btn btn-secondary">Locate on map</button>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Request</button>
+      <p id="request-msg"></p>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> SEA. All rights reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

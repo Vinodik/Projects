@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGOs - SEA</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="left-nav">
+    <a href="{{ url_for('profile_page') }}" class="profile-icon" title="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#0f62fe" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </a>
+    <div class="logo">SEA</div>
+  </div>
+  <nav>
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('dashboard_page') }}">Dashboard</a>
+    <a href="{{ url_for('contact_page') }}">NGOs</a>
+  </nav>
+</header>
+
+<main class="contact-main">
+  <h1>Our Partner NGOs</h1>
+  <div class="card">
+    <ul class="ngo-list">
+      <li data-lat="12.9716" data-lon="77.5946"><b>NGO 1</b> - +91 9019790330</li>
+      <li data-lat="12.9650" data-lon="77.5000"><b>NGO 2</b> - +91 9019790330</li>
+    </ul>
+  </div>
+
+    <h1>Volunteer's</h1>
+  <div class="card">
+    <ul class="ngo-list">
+      <li data-lat="12.9717" data-lon="77.5946"><b>Volunter_1</b> - +91 9019790330</li>
+      <li data-lat="12.9750" data-lon="77.6570"><b>Person_2</b> - +91 9019790330</li>
+    </ul>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> SEA System</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

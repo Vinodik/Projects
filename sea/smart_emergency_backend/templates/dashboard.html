@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - SEA</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="left-nav">
+    <a href="{{ url_for('profile_page') }}" class="profile-icon" title="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#0f62fe" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </a>
+    <div class="logo">SEA</div>
+  </div>
+  <nav>
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('dashboard_page') }}">Dashboard</a>
+    <a href="{{ url_for('contact_page') }}">NGOs</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h1>Live Tracking Dashboard</h1>
+
+  <div class="card map-card">
+    <h2>Real-Time Map</h2>
+    <ul class="ngo-list" style="display:none;">
+    <li data-lat="12.9716" data-lon="77.5946">NGO 1</li>
+    </ul>
+
+    <!-- Added data-request-id for volunteer tracking -->
+    <div id="map" class="map-real" data-request-id="{{ current_request_id }}"></div>
+  </div>
+
+  <div class="card">
+    <h2>My Requests</h2>
+    <div id="requests-list"></div>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> SEA System</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+

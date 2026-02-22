@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - SEA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="left-nav">
+    <a href="profile.html" class="profile-icon" title="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="12" fill="#0f62fe"/>
+        <path fill="white" d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z"/>
+      </svg>
+    </a>
+    <div class="logo">SEA</div>
+  </div>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="contact.html">NGOs</a>
+  </nav>
+</header>
+
+<main class="profile-layout">
+  <div class="professional-card">
+    <div class="form-circle"></div>
+    <h2>My Profile</h2>
+    <p class="form-info">Your saved details</p>
+    <div class="card large-card">
+      <p><strong>Name:</strong> <span id="p-name"></span></p>
+      <p><strong>Email:</strong> <span id="p-email"></span></p>
+      <p><strong>Phone:</strong> <span id="p-phone"></span></p>
+    </div>
+    <button class="btn btn-ghost" onclick="logout()">Logout</button>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> SEA. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volunteer Dashboard - SEA</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<!-- Routing Machine CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+
+<style>
+body { font-family:'Inter',sans-serif; margin:0; background:#f6faff; color:#333; }
+h1,h2 { margin:0 0 12px 0; font-weight:700; }
+a { text-decoration:none; color:inherit; }
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 36px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.logo { font-weight:800; color:#0f62fe; font-size:22px; }
+nav a { margin-left:20px; font-weight:600; color:#333; }
+nav a:hover { color:#0f62fe; }
+main { padding:40px 24px; }
+.map-real { width:100%; height:500px; border-radius:16px; margin-top:20px; box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.card { background:#fff; padding:16px; border-radius:12px; margin-bottom:10px; cursor:pointer; transition:0.2s; border-left:4px solid #0f62fe;}
+.card:hover { background:#f0f5ff; transform:translateX(2px);}
+button { margin-top:8px; margin-right:6px; padding:6px 10px; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+button.accept-btn { background:#0f62fe; color:#fff; }
+button.reject-btn { background:#ff4d4d; color:#fff; }
+button.delete-btn { background:#777; color:#fff; }
+footer { text-align:center; padding:16px; margin-top:30px; color:#555; font-size:14px;}
+#tracking-status { margin-top:10px; padding:10px; background:#fff; border-radius:8px; display:inline-block; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
+#distance-display { margin-left:12px; font-weight:600; color:#0f62fe; }
+@media(max-width:768px){.map-real{height:350px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">SEA</div>
+</header>
+
+<main>
+  <h1>Active Requests</h1>
+  <div id="volunteer-requests-list"></div>
+
+  <h2>Request Location</h2>
+  <div id="map" class="map-real"></div>
+
+  <div id="tracking-status" style="display:none;">
+    <strong>Tracking:</strong> <span id="tracking-info">Not started</span>
+    <span id="distance-display"></span>
+    <button id="stop-tracking" style="margin-left:12px;background:#ff4d4d;color:#fff;border:none;padding:6px 8px;border-radius:6px;cursor:pointer;">Stop tracking</button>
+  </div>
+
+</main>
+
+<footer>© <span id="year"></span> SEA System</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Routing Machine JS -->
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const map = L.map("map").setView([12.9716, 77.5946], 12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{ attribution:"&copy; OpenStreetMap contributors"}).addTo(map);
+
+  let acceptedMarker = null;
+  let requesterMarker = null;
+  let routeControl = null;
+
+  let watchId = null;
+  let volunteerName = null;
+  let volunteerPhone = null;
+  let currentRequestId = null;
+  let requesterCoords = null;
+
+  const trackingContainer = document.getElementById('tracking-status');
+  const trackingInfo = document.getElementById('tracking-info');
+  const distanceDisplay = document.getElementById('distance-display');
+  const stopTrackingBtn = document.getElementById('stop-tracking');
+
+  stopTrackingBtn.addEventListener('click', stopVolunteerTracking);
+
+  // Distance formula (Haversine)
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) ** 2 +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // in km
+  }
+
+  async function loadRequests() {
+    try {
+      const res = await fetch("/api/requests");
+      const requests = await res.json();
+      const list = document.getElementById("volunteer-requests-list");
+      list.innerHTML = "";
+
+      requests.forEach((req) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <strong>${req.resource}</strong><br>
+          Address: ${req.address}<br>
+          Phone: ${req.phone}<br>
+          Time: ${req.time}<br>
+          <button class="accept-btn" data-id="${req.id}">Accept</button>
+          <button class="reject-btn" data-id="${req.id}">Reject</button>
+          <button class="delete-btn" data-id="${req.id}">Delete</button>
+        `;
+        list.appendChild(div);
+
+        div.querySelector(".accept-btn").addEventListener("click", async (e) => {
+          const rid = e.target.dataset.id;
+          await handleAcceptClick(rid);
+        });
+
+        div.querySelector(".reject-btn").addEventListener("click", async () => {
+          if(!confirm("Reject this request?")) return;
+          const r = await fetch(`/api/delete_request/${req.id}`, { method:"DELETE" });
+          if(r.ok) { alert("Request rejected!"); loadRequests(); }
+        });
+
+        div.querySelector(".delete-btn").addEventListener("click", async () => {
+          if(!confirm("Delete this request?")) return;
+          const r = await fetch(`/api/delete_request/${req.id}`, { method:"DELETE" });
+          if(r.ok) { alert("Request deleted!"); loadRequests(); }
+        });
+      });
+    } catch (err) {
+      console.error("Failed to load requests:", err);
+    }
+  }
+
+  async function handleAcceptClick(requestId) {
+    try {
+      const res = await fetch(`/api/accept_request/${requestId}`, { method: "POST" });
+      if (!res.ok) return alert("Failed to accept request");
+
+      const data = await res.json();
+      const address = data.address;
+      const resource = data.resource;
+
+      const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+      const geoData = await geoRes.json();
+      if (!geoData.length) return alert("Unable to locate requester address.");
+
+      const lat = parseFloat(geoData[0].lat);
+      const lon = parseFloat(geoData[0].lon);
+      requesterCoords = [lat, lon];
+
+      if (requesterMarker) requesterMarker.setLatLng(requesterCoords);
+      else requesterMarker = L.marker(requesterCoords, {
+        icon: L.icon({iconUrl:"https://maps.google.com/mapfiles/ms/icons/red-dot.png", iconSize:[32,32]})
+      }).addTo(map).bindPopup(`<strong>${resource}</strong><br>${address}`).openPopup();
+
+      map.setView(requesterCoords, 15);
+      currentRequestId = requestId;
+
+      volunteerName = prompt("Enter your name:", volunteerName || "") || "Volunteer";
+      volunteerPhone = prompt("Enter your phone:", volunteerPhone || "") || "unknown";
+
+      startVolunteerTracking();
+      alert("Request accepted. Tracking started.");
+      loadRequests();
+    } catch (err) {
+      console.error("Accept error:", err);
+    }
+  }
+
+  function startVolunteerTracking() {
+    if (!navigator.geolocation) return alert("Geolocation not supported.");
+    if (watchId !== null) return;
+
+    trackingContainer.style.display = 'inline-block';
+    trackingInfo.textContent = 'Starting...';
+
+    watchId = navigator.geolocation.watchPosition(async (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+
+      if (acceptedMarker) acceptedMarker.setLatLng([lat, lon]);
+      else acceptedMarker = L.marker([lat, lon], {
+        icon: L.icon({iconUrl:"https://maps.google.com/mapfiles/ms/icons/green-dot.png", iconSize:[32,32]})
+      }).addTo(map).bindPopup(`<strong>${volunteerName}</strong> (You)`);
+
+      if (requesterCoords) {
+        const dist = calculateDistance(lat, lon, requesterCoords[0], requesterCoords[1]);
+        distanceDisplay.textContent = `Distance: ${dist.toFixed(2)} km`;
+
+        // Update route line
+        if (routeControl) {
+          routeControl.setWaypoints([[lat, lon], requesterCoords]);
+        } else {
+          routeControl = L.Routing.control({
+            waypoints: [
+              L.latLng(lat, lon),
+              L.latLng(requesterCoords[0], requesterCoords[1])
+            ],
+            routeWhileDragging: false,
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: true,
+            show: false
+          }).addTo(map);
+        }
+      }
+
+      // Send location to backend
+      await fetch("/api/update_helper_location", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          name: volunteerName,
+          phone: volunteerPhone,
+          request_id: currentRequestId,
+          latitude: lat,
+          longitude: lon
+        })
+      });
+
+      const now = new Date().toLocaleTimeString();
+      trackingInfo.textContent = `${volunteerName} — last update ${now}`;
+    },
+    (err) => alert("Location error: " + err.message),
+    { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 });
+  }
+
+  function stopVolunteerTracking() {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+      trackingInfo.textContent = "Stopped";
+      distanceDisplay.textContent = "";
+      if (routeControl) {
+        map.removeControl(routeControl);
+        routeControl = null;
+      }
+      alert("Stopped tracking.");
+    }
+  }
+
+  await loadRequests();
+  setInterval(loadRequests, 10000);
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

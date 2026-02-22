@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - SEA</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header>
+  <div class="left-nav">
+    <a href="{{ url_for('profile_page') }}" class="profile-icon" title="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#0f62fe" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </a>
+    <div class="logo">SEA</div>
+  </div>
+  <nav>
+    <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('dashboard_page') }}">Dashboard</a>
+    <a href="{{ url_for('contact_page') }}">NGOs</a>
+  </nav>
+</header>
+
+<main class="profile-layout">
+  <div class="professional-card">
+    <h2>My Profile</h2>
+    <div class="card large-card">
+      <p><strong>Name:</strong> <span id="p-name"></span></p>
+      <p><strong>Email:</strong> <span id="p-email"></span></p>
+      <p><strong>Phone:</strong> <span id="p-phone"></span></p>
+    </div>
+    <button class="btn btn-ghost" onclick="logout()">Logout</button>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; <span id="year"></span> SEA. All rights reserved.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

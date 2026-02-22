@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - SEA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="signup-page">
+  <div class="auth-card-signup">
+    <h1>SEA</h1>
+    <h2>Create Account</h2>
+    <form id="signup-form">
+      <div class="field">
+        <input type="text" id="signup-name" placeholder="Full Name" required>
+      </div>
+      <div class="field">
+        <input type="tel" id="signup-phone" placeholder="Phone Number" required>
+      </div>
+      <div class="field">
+        <input type="email" id="signup-email" placeholder="Email Address" required>
+      </div>
+      <div class="field">
+        <input type="password" id="signup-pass" placeholder="Password" required>
+      </div>
+      <div class="field">
+        <input type="password" id="signup-confirm" placeholder="Confirm Password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+      <p id="signup-msg" class="small"></p>
+    </form>
+    <p class="small">Already have an account? <a href="{{ url_for('index') }}">Login</a></p>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
